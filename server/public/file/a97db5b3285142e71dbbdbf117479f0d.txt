@@ -1,0 +1,91 @@
+# Copyright (c) 1993-2009 Microsoft Corp.
+
+#
+
+# This is a sample HOSTS file used by Microsoft TCP/IP for Windows.
+
+#
+
+# This file contains the mappings of IP addresses to host names. Each
+
+# entry should be kept on an individual line. The IP address should
+
+# be placed in the first column followed by the corresponding host name.
+
+# The IP address and the host name should be separated by at least one
+
+# space.
+
+#
+
+# Additionally, comments (such as these) may be inserted on individual
+
+# lines or following the machine name denoted by a '#' symbol.
+
+#
+
+# For example:
+
+#
+
+# 102.54.94.97 rhino.acme.com # source server
+
+# 38.25.63.10 x.acme.com # x client host
+
+# localhost name resolution is handled within DNS itself.
+
+# 127.0.0.1 localhost
+
+# ::1 localhost
+
+#74.201.103.204 blhp.www.vivox.com
+
+#34.227.220.29 prod-live-entry.playbattlegrounds.com
+
+#52.84.49.118 prod-live-front.playbattlegrounds.com
+
+#74.201.103.137 proxy.blhp.vivox.com
+
+#54.182.1.174 signcode.pubgbluehole.com
+
+#174.37.54.20 steamcommunity.com
+
+74.201.103.204 blhp.www.vivox.com
+
+#23.61.195.9 steamstore-a.akamaihd.net
+
+#23.61.195.19 steamuserimages-a.akamaihd.net
+
+#23.53.195.110 store.steampowered.com
+
+#74.201.99.245 stun.vivox.com
+
+#203.208.39.231 www.google-analytics.com
+
+#52.85.158.161 j9t5h48n24.execute-api.us-west-2.amazonaws.com
+
+54.174.67.118 prod-live-entry.playbattlegrounds.com
+
+52.84.49.118 prod-live-front.playbattlegrounds.com
+
+74.201.103.137 proxy.blhp.vivox.com
+
+54.182.1.104 signcode.pubgbluehole.com
+
+23.207.97.172 steamcommunity.com
+
+77.67.127.25 steamcommunity-a.akamaihd.net
+
+77.67.127.64 steamstore-a.akamaihd.net
+
+77.67.127.32 steamuserimages-a.akamaihd.net
+
+104.70.211.122 store.steampowered.com
+
+74.201.99.245 stun.vivox.com
+
+203.208.43.72 www.google-analytics.com
+
+52.85.158.212 j9t5h48n24.execute-api.us-west-2.amazonaws.com
+
+219.76.4.4 github-cloud.s3.amazonaws.com

@@ -1,0 +1,169 @@
+#!/usr/bin/env node
+var app = require('../app');
+var debug = require('debug')('server:server');
+var http = require('http');
+
+const { userJoin, getCurrentUser,userLeave,getRoomUsers} = require('../utils/users')
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+var server = http.createServer(app);
+var io = require('socket.io')(server, { 
+  transports: ['websocket'],
+  cors: true
+})
+
+let list = []
+
+io.on('connection',(socket)=> {
+  socket.on('login',data=> {
+    list.push({id:socket.id,email:data})
+    socket.emit('saveId',list)
+  })
+
+  socket.on("select",data=> {
+    socket.to(data.id).emit('test','msg')
+  })
+
+  socket.on('disconnect',()=> {
+    const index = list.findIndex(user => user.id == socket.id)
+    if(index !== -1) list.splice(index,1)
+    console.log('刷新了导致退出并更换新的socketid');
+    io.sockets.emit('changeList',list)
+  })
+
+  // 退出按钮
+  socket.on('exit',()=> {
+    const index = list.findIndex(user => user.id == socket.id)
+    if(index !== -1) list.splice(index,1)
+    io.sockets.emit('changeList',list)
+  })
+})
+
+
+
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+//socket.io通信，transports这里需要加上websocket，否则会跨域
+// io.on('connection', socket=> {
+//   socket.on('joinRoom',({email})=> {
+//     const user = userJoin(socket.id, email,'room')
+//     console.log(user);
+//     socket.join('room')
+//     socket.emit('getMSg',user)
+//   })
+//   socket.on('checkRoom',()=>{
+//     console.log(1);
+//     console.log(getRoomUsers('room'));
+//   })
+//   socket.on('publish',(data)=> {
+//     console.log(data);
+//     const user = userJoin(socket.id, data.email)
+//     socket.emit('notice',user)
+//   })
+//   socket.on('sendPublish',(data)=> {
+//     let toId = data.teacherEmail
+//     console.log('---');
+//     console.log(toId);
+//     let toSocket
+//     try {
+//       toSocket = _.findWhere(io.sockets.sockets, {
+//         email: toId
+//       })
+//       console.log(toSocket);
+//       toSocket.emit("receive",data)
+//     } catch (error) {
+      
+//     }
+//   }),
+//   socket.on('login',({email})=> {
+//     const user = userJoin(socket.id,email,email)
+//     socket.join(email)
+//   })
+// })
+
+// io.on('connection',(socket) => {
+  
+//   // socket.on('sendMsg', (data) => {
+//   //   console.log(data)
+//   //   //给所有用户发送
+//   //   // io.sockets.emit('setId', {id: '1234567'})
+//   //   //给当前用户发送
+//   //   socket.emit('setId', { id: '123456' })
+//   // }),
+//   socket.on('publish',(data)=> {
+//     console.log(data);
+//     console.log(socket.id);
+//     io.sockets.emit('notice',data)
+//   })
+//   // socket.on('login',(data)=> {
+//   //   io.sockets.emit('logined',data)
+//   // })
+// })
+
+
+
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
